@@ -45,6 +45,10 @@ const MenuItem = styled.div`
     font-size: 14px;
     cursor: pointer;
     margin-left: 25px;
+    transition: all .3s ease-in-out;
+    &:hover {
+        opacity: 0.5;
+      }
 `
 
 export const Navbar = () => {

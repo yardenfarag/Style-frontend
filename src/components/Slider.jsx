@@ -67,6 +67,10 @@ const Button = styled.button`
     font-size: 20px;
     background-color: transparent;
     cursor: pointer;
+    transition: all .3s ease-in-out;
+    &:hover {
+        opacity: 0.5;
+      }
 `
 
 export const Slider = () => {
