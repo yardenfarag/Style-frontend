@@ -113,7 +113,7 @@ const Button = styled.button`
     }
 `
 
-export const ProductDetailes = () => {
+export const ProductDetails = () => {
     return (
         <Container>
             <Navbar />

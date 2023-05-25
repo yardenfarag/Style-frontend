@@ -18,6 +18,10 @@ const Wrapper = styled.div`
         width: '75%'
     })}
 `
+const Title = styled.h1`
+  font-size: 24px;
+  font-weight: 300;
+`;
 const Form = styled.form`
     display: flex;
     flex-direction: column;    
