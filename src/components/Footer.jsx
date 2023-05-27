@@ -1,6 +1,7 @@
 import { Facebook, Instagram, MailOutline, Phone, Pinterest, Room, Twitter } from "@mui/icons-material"
 import styled from "styled-components"
 import { mobile } from "../responsive"
+import { Link } from "react-router-dom"
 
 const Container = styled.div`
     display: flex;
@@ -55,6 +56,9 @@ const List = styled.ul`
 const ListItem = styled.li`
     width: 50%;
     margin-bottom: 10px;
+    &:hover {
+        opacity: .7;
+    }
 `
 const Right = styled.div`
     flex: 1;
@@ -100,15 +104,11 @@ export const Footer = () => {
             <Center>
                 <Title>Useful Links</Title>
                 <List>
-                    <ListItem>Home</ListItem>
-                    <ListItem>Cart</ListItem>
-                    <ListItem>Man Fashion</ListItem>
-                    <ListItem>Woman Fashion</ListItem>
-                    <ListItem>Accessories</ListItem>
-                    <ListItem>My Account</ListItem>
-                    <ListItem>Order Tracking</ListItem>
-                    <ListItem>Wishlist</ListItem>
-                    <ListItem>Terms</ListItem>
+                    <Link to='/' style={{ textDecoration: 'none', color: 'black', width: '50%', marginBottom: '10px' }}><ListItem>Home</ListItem></Link>
+                    <Link to='/cart' style={{ textDecoration: 'none', color: 'black', width: '50%', marginBottom: '10px' }}><ListItem>Cart</ListItem></Link>
+                    <Link to='/products' style={{ textDecoration: 'none', color: 'black', width: '50%', marginBottom: '10px' }}><ListItem>Clothes</ListItem></Link>
+                    <Link to='/login' style={{ textDecoration: 'none', color: 'black', width: '50%', marginBottom: '10px' }}><ListItem>Log in</ListItem></Link>
+                    <Link to='/register' style={{ textDecoration: 'none', color: 'black', width: '50%', marginBottom: '10px' }}><ListItem>Register</ListItem></Link>
                 </List>
             </Center>
             <Right>

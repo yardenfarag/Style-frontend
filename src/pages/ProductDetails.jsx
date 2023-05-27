@@ -7,9 +7,10 @@ import { Add, Remove } from "@mui/icons-material"
 import { mobile } from "../responsive"
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
-import axios from "axios"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { cartActions } from "../store/cart"
+import { getById } from "../store/product"
+import { Loader } from "../components/Loader"
 
 const Container = styled.div`
 
@@ -127,23 +128,14 @@ const Button = styled.button`
 export const ProductDetails = () => {
     const location = useLocation()
     const id = location.pathname.split('/')[2]
-    const [product, setProduct] = useState({})
+    const product = useSelector(state => state.product.currProduct)
     const [quantity, setQuantity] = useState(1)
     const [color, setColor] = useState('')
     const [size, setSize] = useState('')
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const getProduct = async () => {
-            try {
-                const res = await axios.get(`http://localhost:5000/api/products/find/${id}`)
-                setProduct(res.data)
-            }
-            catch (err) {
-                console.error(err)
-            }
-        }
-        getProduct()
+        dispatch(getById(id))
     }, [id])
 
     const handleQuantity = (type) => {
@@ -161,9 +153,7 @@ export const ProductDetails = () => {
 
     if (!product) {
         return (
-            <div>
-                Loading...
-            </div>
+            <Loader/>
         )
     } else {
         return (
@@ -171,6 +161,7 @@ export const ProductDetails = () => {
                 <Navbar />
                 <Announcement />
                 <Wrapper>
+                    {!product && <Loader/>}
                     <ImgContainer>
                         <Image src={product.img}></Image>
                     </ImgContainer>

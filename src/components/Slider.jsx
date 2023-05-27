@@ -3,6 +3,7 @@ import { useState } from "react"
 import styled from "styled-components"
 import { sliderItems } from "../data"
 import { mobile } from "../responsive"
+import { Link } from "react-router-dom"
 
 const Container = styled.div`
     width: 100%;
@@ -80,7 +81,6 @@ const Button = styled.button`
 export const Slider = () => {
     const [slideIndex, setSlideIndex] = useState(0)
     const handleClick = (direction) => {
-        console.log(direction);
         if (direction === 'left') {
             setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2)
         }
@@ -103,7 +103,7 @@ export const Slider = () => {
                             <InfoContainer>
                                 <Title>{sliderItem.title}</Title>
                                 <Description>{sliderItem.desc}</Description>
-                                <Button>SHOP NOW</Button>
+                                <Link to='/products'><Button>SHOP NOW</Button></Link>
                             </InfoContainer>
                         </Slide>
                     })}

@@ -4,7 +4,13 @@ import { Announcement } from "../components/Announcement"
 import { Footer } from "../components/Footer"
 import { Add, Remove } from "@mui/icons-material"
 import { mobile } from "../responsive"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import StripeCheckout from "react-stripe-checkout"
+import { checkout } from "../store/cart"
+import { useNavigate } from 'react-router-dom'
+import { Link } from "react-router-dom"
+
+const KEY = 'pk_test_51MZOnQE2nCh4pQvl7tPaCvsrQ4WmbjJMfY9ZqZhXdicLrBHcnVPRTbLIAAMMhcgeKpcJrVyCzhXU8B96htccHeqB007URW6aHm'
 
 const Container = styled.div`
 
@@ -12,8 +18,8 @@ const Container = styled.div`
 const Wrapper = styled.div`
     padding: 20px;
     ${mobile({
-        padding: '10px'
-    })}
+    padding: '10px'
+})}
 `
 const Title = styled.h1`
     font-weight: 300;
@@ -35,8 +41,8 @@ const TopButton = styled.button`
 `
 const TopTexts = styled.div`
     ${mobile({
-        display: 'none'
-    })}
+    display: 'none'
+})}
 `
 const TopText = styled.span`
     text-decoration: underline;
@@ -47,8 +53,8 @@ const Bottom = styled.div`
     display: flex;
     justify-content: space-between;
     ${mobile({
-        flexDirection: 'column'
-    })}
+    flexDirection: 'column'
+})}
 `
 const Info = styled.div`
     flex: 3;
@@ -57,8 +63,8 @@ const Product = styled.div`
     display: flex;
     justify-content: space-between;
     ${mobile({
-        flexDirection: 'column'
-    })}
+    flexDirection: 'column'
+})}
 `
 const ProductDetail = styled.div`
     flex: 2;
@@ -84,6 +90,7 @@ const ProductColor = styled.div`
     height: 20px;
     border-radius: 50%;
     background-color: ${props => props.color};
+    border: 1px solid #8f8e8e;
 `
 const ProductSize = styled.span`
 
@@ -103,15 +110,15 @@ const ProductAmount = styled.div`
     font-size: 24px;
     margin: 5px;
     ${mobile({
-        margin: '5px 15px'
-    })}
+    margin: '5px 15px'
+})}
 `
 const ProductPrice = styled.span`
     font-size: 30px;
     font-weight: 200;
     ${mobile({
-        marginBottom: '20px'
-    })}
+    marginBottom: '20px'
+})}
 `
 const Hr = styled.hr`
     background-color: #eee;
@@ -152,10 +159,24 @@ const SummaryButton = styled.button`
     &:hover {
         opacity: .8;
     }
+    &:disabled {
+        cursor: not-allowed;
+    }
 `
 
 export const Cart = () => {
-    const cart = useSelector(state=>state.cart)
+    const cart = useSelector(state => state.cart)
+    const order = useSelector(state => state.cart.orderData)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const makeRequest = (token) => {
+        dispatch(checkout({tokenId: token.id, amount: cart.total*100}))
+        navigate('/success', { data: order })
+    }
+    const onToken = (token) => {
+        makeRequest(token)
+    }
     return (
         <Container>
             <Navbar />
@@ -163,35 +184,30 @@ export const Cart = () => {
             <Wrapper>
                 <Title>Your Bag</Title>
                 <Top>
-                    <TopButton>Continue Shopping</TopButton>
-                    <TopTexts>
-                        <TopText>Shopping Bag(2)</TopText>
-                        <TopText>Your Wishlist(0)</TopText>
-                    </TopTexts>
-                    <TopButton type="filled">Checkout</TopButton>
+                    <Link to='/products'><TopButton>Continue Shopping</TopButton></Link>
                 </Top>
                 <Bottom>
                     <Info>
-                        {cart.products.map(product=>
-                        <Product>
-                            <ProductDetail>
-                                <Image src={product.img}/>
-                                <Details>
-                                    <ProductName><b>Product:</b>{product.title}</ProductName>
-                                    <ProductId><b>ID:</b>{product._id}</ProductId>
-                                    <ProductColor color={product.color} />
-                                    <ProductSize><b>Size:</b>{product.size}</ProductSize>
-                                </Details>
-                            </ProductDetail>
-                            <PriceDetail>
-                                <ProductAmountContainer>
-                                    <Add />
-                                    <ProductAmount>2</ProductAmount>
-                                    <Remove />
-                                </ProductAmountContainer>
-                                <ProductPrice>${product.price*product.quantity}</ProductPrice>
-                            </PriceDetail>
-                        </Product>)}
+                        {cart.products.map(product =>
+                            <Product key={Math.random()}>
+                                <ProductDetail>
+                                    <Image src={product.img} />
+                                    <Details>
+                                        <ProductName><b>Product:</b>{product.title}</ProductName>
+                                        <ProductId><b>ID:</b>{product._id}</ProductId>
+                                        <ProductColor color={product.color} />
+                                        <ProductSize><b>Size:</b>{product.size}</ProductSize>
+                                    </Details>
+                                </ProductDetail>
+                                <PriceDetail>
+                                    <ProductAmountContainer>
+                                        <Add />
+                                        <ProductAmount>2</ProductAmount>
+                                        <Remove />
+                                    </ProductAmountContainer>
+                                    <ProductPrice>${product.price * product.quantity}</ProductPrice>
+                                </PriceDetail>
+                            </Product>)}
                         <Hr />
                     </Info>
                     <Summary>
@@ -202,17 +218,27 @@ export const Cart = () => {
                         </SummaryItem>
                         <SummaryItem>
                             <SummaryItemText>Estimated Shipping</SummaryItemText>
-                            <SummaryItemPrice>$5.90</SummaryItemPrice>
+                            <SummaryItemPrice>${cart.total> 50 ? '5.90' : '0.00'}</SummaryItemPrice>
                         </SummaryItem>
                         <SummaryItem>
                             <SummaryItemText>Shipping Discount</SummaryItemText>
-                            <SummaryItemPrice>$-5.90</SummaryItemPrice>
+                            <SummaryItemPrice>${cart.total> 50 ? '-5.90' : '0.00'}</SummaryItemPrice>
                         </SummaryItem>
                         <SummaryItem type='total'>
                             <SummaryItemText>Total</SummaryItemText>
                             <SummaryItemPrice>${cart.total}</SummaryItemPrice>
                         </SummaryItem>
-                        <SummaryButton>CHECKOUT</SummaryButton>
+                        <StripeCheckout
+                            name='Style Shop'
+                            billingAddress
+                            shippingAddress
+                            description={`Your total is ${cart.total}`}
+                            amount={cart.total * 100}
+                            token={onToken}
+                            stripeKey={KEY}
+                        >
+                            <SummaryButton disabled={cart.total <= 0}>CHECKOUT</SummaryButton>
+                        </StripeCheckout>
                     </Summary>
                 </Bottom>
             </Wrapper>
@@ -220,3 +246,5 @@ export const Cart = () => {
         </Container>
     )
 }
+
+

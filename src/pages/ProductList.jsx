@@ -5,7 +5,6 @@ import { Footer } from "../components/Footer"
 import { Products } from "../components/Products"
 import { Newsletter } from "../components/Newsletter"
 import { mobile } from "../responsive"
-import { useLocation } from "react-router-dom"
 import { useState } from "react"
 
 const Container = styled.div`
@@ -47,8 +46,6 @@ const Option = styled.option`
 
 `
 export const ProductList = () => {
-    const location = useLocation()
-    const category = location.pathname.split('/')[2]
     const [filter, setFilter] = useState({})
     const [sort, setSort] = useState('newest')
     const handleFilter = (ev) => {
@@ -65,12 +62,11 @@ export const ProductList = () => {
         <Container>
             <Navbar />
             <Announcement />
-            <Title>{category}</Title>
             <FilterContainer>
                 <Filter>
                     <FilterText>Filter Products:</FilterText>
                     <Select name='color' onChange={handleFilter}>
-                        <Option disabled>Color</Option>
+                        <Option value=''>color - all</Option>
                         <Option>white</Option>
                         <Option>black</Option>
                         <Option>red</Option>
@@ -79,7 +75,7 @@ export const ProductList = () => {
                         <Option>green</Option>
                     </Select>
                     <Select name='size' onChange={handleFilter}>
-                        <Option disabled>Size</Option>
+                        <Option value= ''>size - all</Option>
                         <Option>XS</Option>
                         <Option>S</Option>
                         <Option>M</Option>
@@ -96,7 +92,7 @@ export const ProductList = () => {
                     </Select>
                     </Filter>
             </FilterContainer>
-            <Products category={category} filter={filter} sort={sort}/>
+            <Products filter={filter} sort={sort}/>
             <Newsletter />
             <Footer />
         </Container>

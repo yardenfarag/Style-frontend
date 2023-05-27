@@ -1,5 +1,9 @@
 import styled from "styled-components"
 import { mobile } from "../responsive"
+import { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { login } from "../store/auth"
+import { Link, Navigate } from "react-router-dom"
 
 const Container = styled.div`
     width: 100vw;
@@ -44,8 +48,14 @@ const Button = styled.button`
     &:hover {
         opacity: .8;
     }
+    &:disabled {
+        cursor: not-allowed;
+    }
 `
-const Link = styled.a`
+const Error = styled.span`
+    color: #f46d6d;
+`
+const RegisterLink = styled.span`
     margin: 5px 0px;
     font-size: 12px;
     text-decoration: underline;
@@ -53,16 +63,31 @@ const Link = styled.a`
 `
 
 export const Login = () => {
+    const dispatch = useDispatch()
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const error = useSelector(state => state.auth.error)
+    const user = useSelector(state => state.auth.user)
+    const handleLogin = (ev) => {
+        ev.preventDefault()
+        dispatch(login({username, password}))
+    }
+    useEffect(() => {
+        if (user) {
+            Navigate('/')
+        }
+    }, [user])
+    const buttonTitle = (!username || !password ? 'Please fill all fields' : 'Login')
   return (
     <Container>
         <Wrapper>
             <Title>Create an account</Title>
             <Form>
-                <Input placeholder='username'/>
-                <Input placeholder='password'/>
-                <Button>LOGIN</Button>
-                <Link>Forgot your password?</Link>
-                <Link>Create a new account</Link>
+                <Input placeholder='username' onChange={(ev) => setUsername(ev.target.value)}/>
+                <Input type='password' placeholder='password' onChange={(ev) => setPassword(ev.target.value)}/>
+                <Button onClick={handleLogin} disabled={!username || !password} title={buttonTitle}>LOGIN</Button>
+                {error && <Error>Username or password are wrong, please try again.</Error>}
+                <Link to='/register' style={{ textDecoration: 'none', color: 'black' }}><RegisterLink>Create an account</RegisterLink></Link>
             </Form>
         </Wrapper>
     </Container>

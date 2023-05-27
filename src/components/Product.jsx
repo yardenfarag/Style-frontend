@@ -1,4 +1,4 @@
-import { FavoriteBorderOutlined, SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material"
+import { FavoriteBorderOutlined, LocalMall, RemoveRedEye, SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 
@@ -30,21 +30,13 @@ const Container = styled.div`
         opacity: 1;
     }
 `
-// const Circle = styled.img`
-//     width: 200px;
-//     height: 200px;
-//     border-radius: 50%;
-//     background-color: white;
-//     position: absolute;
-// `
 const Image = styled.img`
     z-index: 2;
     height: 75%;
 `
-
 const Icon = styled.div`
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     background-color: white;
     display: flex;
@@ -57,6 +49,9 @@ const Icon = styled.div`
         background-color: #e9f5f5;
         transform: scale(1.1)
     }
+    `
+const Price = styled.span`
+    color: teal;
 `
 
 export const Product = ({ item }) => {
@@ -65,16 +60,14 @@ export const Product = ({ item }) => {
             {/* <Circle /> */}
             <Image src={item.img} />
             <Info>
-                <Icon>
+                {/* <Icon>
                     <ShoppingCartOutlined />
-                </Icon>
+                </Icon> */}
                 <Icon>
-                    <Link to={`/product/${item._id}`}>
-                        <SearchOutlined />
+                    <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'black', display: 'flex', flexDirection: 'column' }}>
+                        <LocalMall style={{fill: 'teal', fontSize: '28px'}}/>
+                        <Price>${item.price}</Price>
                     </Link>
-                </Icon>
-                <Icon>
-                    <FavoriteBorderOutlined />
                 </Icon>
             </Info>
         </Container>
