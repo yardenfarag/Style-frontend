@@ -33,6 +33,7 @@ const cartSlice = createSlice({
                 state.total = 0
             })
             .addCase(checkout.pending, (state, action) => {
+                state.orderData = null
                 state.loading = true
             })
             .addCase(checkout.rejected, (state, action) => {

@@ -57,15 +57,11 @@ const Price = styled.span`
 export const Product = ({ item }) => {
     return (
         <Container>
-            {/* <Circle /> */}
             <Image src={item.img} />
             <Info>
-                {/* <Icon>
-                    <ShoppingCartOutlined />
-                </Icon> */}
                 <Icon>
                     <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'black', display: 'flex', flexDirection: 'column' }}>
-                        <LocalMall style={{fill: 'teal', fontSize: '28px'}}/>
+                        <LocalMall style={{fill: 'teal', fontSize: '28px', paddingLeft: '2px'}}/>
                         <Price>${item.price}</Price>
                     </Link>
                 </Icon>

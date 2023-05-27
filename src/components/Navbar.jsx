@@ -6,6 +6,8 @@ import { mobile } from '../responsive'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { authActions } from '../store/auth'
+import { toast, ToastContainer } from 'react-toastify'
+import { ToastyMessage } from './ToastyMessage'
 
 const Container = styled.div`
     height: 60px;
@@ -59,6 +61,14 @@ const MenuItem = styled.div`
         opacity: 0.5;
       }
 `
+const Greeting = styled.div`
+    font-size: 14px;
+    margin-left: 25px;
+    ${mobile({
+    fontSize: '12px',
+    marginLeft: '12px'
+})}
+`
 
 export const Navbar = () => {
     const dispatch = useDispatch()
@@ -66,14 +76,17 @@ export const Navbar = () => {
     const user = useSelector(state => state.auth.user)
     const logoutHandler = () => {
         dispatch(authActions.logout())
+        toast('Logged Out Successfully!')
     }
     return (
         <Container>
             <Wrapper>
+                <ToastyMessage/>
                 <Left>
                     <Link to='/' style={{ textDecoration: 'none' }}><Logo>Style.</Logo></Link>
                 </Left>
                 <Right>
+                    {user && <Greeting>Welcome Back, {user.name}!</Greeting>}
                     {!user && <Link to='/register' style={{ textDecoration: 'none', color: 'black' }}><MenuItem>Register</MenuItem></Link>}
                     {!user && <Link to='/login' style={{ textDecoration: 'none', color: 'black' }}><MenuItem>Log in</MenuItem></Link>}
                     {user && <MenuItem onClick={logoutHandler}>Log out</MenuItem>}

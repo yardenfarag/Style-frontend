@@ -81,7 +81,7 @@ export const Login = () => {
   return (
     <Container>
         <Wrapper>
-            <Title>Create an account</Title>
+            <Title>Log in</Title>
             <Form>
                 <Input placeholder='username' onChange={(ev) => setUsername(ev.target.value)}/>
                 <Input type='password' placeholder='password' onChange={(ev) => setPassword(ev.target.value)}/>

@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { cartActions } from "../store/cart"
 import { getById } from "../store/product"
 import { Loader } from "../components/Loader"
+import { ToastyMessage } from "../components/ToastyMessage"
+import { toast } from "react-toastify"
 
 const Container = styled.div`
 
@@ -136,6 +138,7 @@ export const ProductDetails = () => {
 
     useEffect(() => {
         dispatch(getById(id))
+        setColor(product.color[0])
     }, [id])
 
     const handleQuantity = (type) => {
@@ -149,6 +152,7 @@ export const ProductDetails = () => {
 
     const addToCartHandler = () => {
         dispatch(cartActions.addProduct({...product, quantity, color, size}))
+        toast('Item added to cart!')
     }
 
     if (!product) {
@@ -158,6 +162,7 @@ export const ProductDetails = () => {
     } else {
         return (
             <Container>
+                <ToastyMessage/>
                 <Navbar />
                 <Announcement />
                 <Wrapper>
