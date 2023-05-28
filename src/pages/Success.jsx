@@ -2,6 +2,7 @@ import { useSelector } from "react-redux"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { Loader } from '../components/Loader'
 
 const Container = styled.div`
     height: 80vh;
@@ -29,7 +30,12 @@ const Button = styled.button`
 
 export const Success = () => {
     const data = useSelector(state => state.cart.orderData)
-    return (
+    if (!data) {
+        return (
+            <Loader/>
+        )
+    }
+    else return (
         <Container>
             <CheckCircleIcon style={{ fill: 'green', fontSize: '6rem' }} />
             <OrderInfoContainer>

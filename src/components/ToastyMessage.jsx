@@ -12,7 +12,6 @@ export const ToastyMessage = () => {
             rtl={false}
             pauseOnFocusLoss
             draggable
-            pauseOnHover
             theme="light"
         />
   )

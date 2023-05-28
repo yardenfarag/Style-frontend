@@ -6,7 +6,7 @@ import { Add, Remove } from "@mui/icons-material"
 import { mobile } from "../responsive"
 import { useDispatch, useSelector } from "react-redux"
 import StripeCheckout from "react-stripe-checkout"
-import { checkout } from "../store/cart"
+import { cartActions, checkout } from "../store/cart"
 import { useNavigate } from 'react-router-dom'
 import { Link } from "react-router-dom"
 
@@ -177,6 +177,12 @@ export const Cart = () => {
     const onToken = (token) => {
         makeRequest(token)
     }
+    const addProductHandler = (productId) => {
+        dispatch(cartActions.increaseProductQuantity(productId))
+    }
+    const removeProductHandler = (productId) => {
+        dispatch(cartActions.removeProduct(productId))
+    }
     return (
         <Container>
             <Navbar />
@@ -191,7 +197,7 @@ export const Cart = () => {
                         {cart.products.map(product =>
                             <Product key={Math.random()}>
                                 <ProductDetail>
-                                    <Image src={product.img} />
+                                    <Link to={`/product/${product._id}`}><Image src={product.img} /></Link>
                                     <Details>
                                         <ProductName><b>Product:</b>{product.title}</ProductName>
                                         <ProductId><b>ID:</b>{product._id}</ProductId>
@@ -201,9 +207,9 @@ export const Cart = () => {
                                 </ProductDetail>
                                 <PriceDetail>
                                     <ProductAmountContainer>
-                                        <Add />
-                                        <ProductAmount>2</ProductAmount>
-                                        <Remove />
+                                        <Add onClick={() => addProductHandler(product._id)} style={{cursor: 'pointer'}}/>
+                                        <ProductAmount>{product.quantity}</ProductAmount>
+                                        <Remove onClick={() => removeProductHandler(product._id)} style={{cursor: 'pointer'}}/>
                                     </ProductAmountContainer>
                                     <ProductPrice>${product.price * product.quantity}</ProductPrice>
                                 </PriceDetail>

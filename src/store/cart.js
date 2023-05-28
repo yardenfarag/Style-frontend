@@ -20,6 +20,22 @@ const cartSlice = createSlice({
             state.quantity += 1
             state.products.push(action.payload)
             state.total += action.payload.price*action.payload.quantity
+        },
+        removeProduct: (state, action) => {
+            state.quantity -= 1
+            const productIdx = state.products.findIndex(product => product._id === action.payload)
+            state.total -= state.products[productIdx].price
+             if (state.products[productIdx].quantity === 1) {
+                state.products.splice(productIdx, 1)
+            } else if (state.products[productIdx].quantity > 1) {
+                state.products[productIdx].quantity -= 1
+            } 
+        },
+        increaseProductQuantity: (state, action) => {
+            state.quantity += 1
+            const productIdx = state.products.findIndex(product => product._id === action.payload)
+            state.products[productIdx].quantity += 1
+            state.total += state.products[productIdx].price
         }
     },
     extraReducers: (builder) => {
@@ -33,6 +49,7 @@ const cartSlice = createSlice({
                 state.total = 0
             })
             .addCase(checkout.pending, (state, action) => {
+                state.orderData = null
                 state.orderData = null
                 state.loading = true
             })

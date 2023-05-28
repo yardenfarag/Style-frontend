@@ -139,7 +139,8 @@ export const ProductDetails = () => {
     useEffect(() => {
         dispatch(getById(id))
         setColor(product.color[0])
-    }, [id])
+        setSize(product.size[0])
+    }, [id, location])
 
     const handleQuantity = (type) => {
         if (type === 'dec') {
@@ -151,6 +152,14 @@ export const ProductDetails = () => {
     }
 
     const addToCartHandler = () => {
+        if (!color) {
+            toast('Please select a color!')
+            return
+        }
+        if (!size) {
+            toast('Please select a size!')
+            return
+        }
         dispatch(cartActions.addProduct({...product, quantity, color, size}))
         toast('Item added to cart!')
     }
