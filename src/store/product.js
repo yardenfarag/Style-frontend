@@ -1,11 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
-// import { productService } from '../services/product.service'
+import { httpService } from '../services/http.service'
 
 export const query = createAsyncThunk('product', async () => {
     try {
-        const res = await axios.get('http://localhost:5500/api/product')
-        return res.data
+        return await httpService.get('product')
     } catch (error) {
         console.error(error.message)
     }
@@ -13,14 +11,13 @@ export const query = createAsyncThunk('product', async () => {
 
 export const getById = createAsyncThunk('product/:id', async (productId) => {
     try {
-        const res = await axios.get('http://localhost:5500/api/product/' + productId)
-        return res.data
+        return await httpService.get(`product/${productId}`)
     } catch (error) {
         console.error(error.message)
     }
 })
 
-const initialProductState = { currProduct: null, products: null, loading: false, error: null, filter: null }
+const initialProductState = { currProduct: '', products: [], loading: false, error: null, filter: null }
 
 export const productSlice = createSlice({
     name: 'product',
@@ -50,7 +47,7 @@ export const productSlice = createSlice({
                 state.error = null
             })
             .addCase(getById.pending, (state, action) => {
-                state.currProduct = null
+                state.currProduct = ''
                 state.loading = true
             })
             .addCase(getById.rejected, (state, action) => {

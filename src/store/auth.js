@@ -1,18 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { httpService } from '../services/http.service'
 
 export const signup = createAsyncThunk('auth/signup', async ({ name, lastName, username, email, password }) => {
     try {
-        const res = await axios.post('http://localhost:5500/api/auth/signup', { name, lastName, username, email, password })
-        return res.data
+        return await httpService.post('auth/signup', { name, lastName, username, email, password })
     } catch (error) {
         console.error(error.message)
     }
 })
 export const login = createAsyncThunk('auth/login', async ({ username, password }) => {
     try {
-        const res = await axios.post('http://localhost:5500/api/auth/login', { username, password })
-        return res.data
+        return await httpService.post('auth/login', {username, password})
     } catch (error) {
         console.error(error.message)
     }

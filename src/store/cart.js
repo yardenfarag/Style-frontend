@@ -1,12 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
+import { httpService } from '../services/http.service'
 
 const initialCartState = {products: [], quantity:0, total: 0, loading: false, error: null, orderData: null}
 
 export const checkout = createAsyncThunk('checkout/payment', async ({ tokenId, amount }) => {
     try {
-        const res = await axios.post('http://localhost:5500/api/checkout/payment', { tokenId, amount })
-        return res.data
+        return await httpService.post('checkout/payment', { tokenId, amount })
     } catch (error) {
         console.error(error.message)
     }
