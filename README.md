@@ -1,6 +1,7 @@
 # Style - Online Clothing Store (Frontend)
 
 deployed at: https://style-bvr9.onrender.com/
+backend repo at: https://github.com/yardenfarag/Style.backend
 
 Style is a modern and stylish online clothing store built with React, Redux Toolkit, Vite, Material-UI, styled-components, react-loader, and react-toastify.
 
