@@ -14,13 +14,10 @@ Style is a modern and stylish online clothing store built with React, Redux Tool
 ## Installation
 
 1. Clone the repository:
-
-   ```shell
-   git clone https://github.com/your-username/style-frontend.git
-   ```
-   
+```shell
+git clone https://github.com/your-username/style-frontend.git
+```  
 2. Navigate to the project directory:
-
 ```shell
 cd style-frontend
  ```
@@ -33,7 +30,7 @@ npm install
 npm run dev
  ```
  
- Technologies Used
+ # Technologies Used
 
     React: JavaScript library for building user interfaces.
     Redux Toolkit: State management library for React applications.
@@ -43,6 +40,6 @@ npm run dev
     React Loader: Library for displaying loading spinners and indicators.
     React Toastify: Notification system for React applications.
 
-Contributing
+# Contributing
 
 Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
