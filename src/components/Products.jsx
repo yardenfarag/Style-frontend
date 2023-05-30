@@ -57,7 +57,11 @@ export const Products = ({ filter, sort }) => {
     }
   }, [sort])
 
-  return (
+  if (!products) {
+    return <Loader />
+  }
+
+  else return (
     <Container>
       {!products && <Loader/>}
       {filteredProducts.map(item => <Product key={item._id} item={item} />)}

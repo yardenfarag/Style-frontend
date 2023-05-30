@@ -138,8 +138,8 @@ export const ProductDetails = () => {
 
     useEffect(() => {
         dispatch(getById(id))
-        setColor(product.color[0])
-        setSize(product.size[0])
+        setColor(product?.color[0])
+        setSize(product?.size[0])
     }, [id, location])
 
     const handleQuantity = (type) => {
